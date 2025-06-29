@@ -1,0 +1,292 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    height: 100vh;
+    background-color: #000;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 65%;
+    background: linear-gradient(to bottom, #000000, #3b1e00, #ff6a00);
+    animation: sky-color 10s infinite;
+}
+
+.ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background-color: #2a1600;
+}
+
+.barn {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 250px;
+    z-index: 2;
+}
+
+.barn-body {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 180px;
+    background-color: #8b0000;
+    border: 4px solid #420000;
+    animation: burn 8s infinite;
+}
+
+.barn-roof {
+    position: absolute;
+    bottom: 180px;
+    width: 100%;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 70px solid #5c0000;
+    animation: roof-burn 10s infinite;
+}
+
+.barn-door {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 100px;
+    background-color: #3b0000;
+    border: 3px solid #2a0000;
+    animation: door-burn 12s infinite;
+}
+
+.barn-window {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ff7700;
+    border: 3px solid #3b0000;
+    top: 50px;
+    animation: window-flicker 0.5s infinite;
+}
+
+.barn-window.left {
+    left: 50px;
+}
+
+.barn-window.right {
+    right: 50px;
+}
+
+.fire-container {
+    position: absolute;
+    bottom: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 250px;
+    z-index: 3;
+}
+
+.fire-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 40px;
+    background: radial-gradient(ellipse at center, rgba(255, 80, 0, 0.8) 0%, rgba(255, 80, 0, 0) 70%);
+    border-radius: 50%;
+    filter: blur(5px);
+    animation: glow 2s infinite alternate;
+}
+
+.flames {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 180px;
+}
+
+.flame {
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    height: 120px;
+    background: linear-gradient(to top, #ff4500, #ff7700, #ffff00);
+    border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+    filter: blur(5px);
+    opacity: 0.9;
+    animation: flame 2s infinite;
+}
+
+.flame:nth-child(1) { left: 10px; height: 140px; animation-delay: 0.1s; }
+.flame:nth-child(2) { left: 40px; height: 160px; animation-delay: 0.2s; }
+.flame:nth-child(3) { left: 70px; height: 170px; animation-delay: 0.3s; }
+.flame:nth-child(4) { left: 100px; height: 180px; animation-delay: 0.4s; }
+.flame:nth-child(5) { left: 130px; height: 160px; animation-delay: 0.5s; }
+.flame:nth-child(6) { left: 160px; height: 170px; animation-delay: 0.6s; }
+.flame:nth-child(7) { left: 190px; height: 150px; animation-delay: 0.7s; }
+.flame:nth-child(8) { left: 220px; height: 140px; animation-delay: 0.8s; }
+.flame:nth-child(9) { left: 250px; height: 130px; animation-delay: 0.9s; }
+.flame:nth-child(10) { left: 280px; height: 120px; animation-delay: 1s; }
+
+.sparks {
+    position: absolute;
+    bottom: 120px;
+    left: 0;
+    width: 100%;
+    height: 150px;
+}
+
+.spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #ffff00;
+    border-radius: 50%;
+    filter: blur(1px);
+    opacity: 0.8;
+    animation: spark 3s infinite;
+}
+
+.smoke {
+    position: absolute;
+    bottom: 180px;
+    left: 0;
+    width: 100%;
+    height: 200px;
+}
+
+.smoke-particle {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: rgba(100, 100, 100, 0.3);
+    border-radius: 50%;
+    filter: blur(10px);
+    animation: smoke 8s infinite;
+}
+
+/* Animations */
+@keyframes flame {
+    0%, 100% {
+        transform: scaleX(1) scaleY(1) translateY(0);
+    }
+    50% {
+        transform: scaleX(0.9) scaleY(1.1) translateY(-10px);
+    }
+}
+
+@keyframes spark {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx, 0), calc(-100px - var(--ty, 0))) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes smoke {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translate(var(--tx, 0), -200px) scale(3);
+        opacity: 0;
+    }
+}
+
+@keyframes burn {
+    0% {
+        box-shadow: 0 0 20px 10px rgba(255, 80, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px 15px rgba(255, 80, 0, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 20px 10px rgba(255, 80, 0, 0.5);
+    }
+}
+
+@keyframes roof-burn {
+    0% {
+        border-bottom-color: #5c0000;
+    }
+    50% {
+        border-bottom-color: #8b0000;
+    }
+    100% {
+        border-bottom-color: #5c0000;
+    }
+}
+
+@keyframes door-burn {
+    0%, 100% {
+        background-color: #3b0000;
+    }
+    50% {
+        background-color: #5c0000;
+    }
+}
+
+@keyframes window-flicker {
+    0%, 100% {
+        background-color: #ff7700;
+        box-shadow: 0 0 10px 5px rgba(255, 119, 0, 0.7);
+    }
+    50% {
+        background-color: #ff9900;
+        box-shadow: 0 0 15px 7px rgba(255, 153, 0, 0.9);
+    }
+}
+
+@keyframes glow {
+    0% {
+        opacity: 0.7;
+        width: 280px;
+    }
+    100% {
+        opacity: 1;
+        width: 320px;
+    }
+}
+
+@keyframes sky-color {
+    0% {
+        background: linear-gradient(to bottom, #000000, #3b1e00, #ff6a00);
+    }
+    50% {
+        background: linear-gradient(to bottom, #1a0000, #5c2e00, #ff8c40);
+    }
+    100% {
+        background: linear-gradient(to bottom, #000000, #3b1e00, #ff6a00);
+    }
+}
