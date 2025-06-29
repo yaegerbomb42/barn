@@ -1,4 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Hide loading screen after everything is loaded
+    window.addEventListener('load', () => {
+        const loading = document.getElementById('loading');
+        if (loading) {
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 2000);
+        }
+    });
+
     // Initialize spark positions and movements
     const sparks = document.querySelectorAll('.spark');
     sparks.forEach(spark => {
@@ -32,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.container');
     const flames = document.querySelectorAll('.flame');
     
+    // Mouse movement interaction
     container.addEventListener('mousemove', (e) => {
         const xPos = e.clientX / window.innerWidth - 0.5; // -0.5 to 0.5
         
@@ -39,6 +50,47 @@ document.addEventListener('DOMContentLoaded', () => {
             const offsetX = xPos * 20 * (index % 2 === 0 ? 1 : -1);
             flame.style.transform = `translateX(${offsetX}px) scaleY(${1 + Math.abs(xPos) * 0.2})`;
         });
+    });
+
+    // Add touch support for mobile devices
+    container.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (e.touches && e.touches[0]) {
+            const touch = e.touches[0];
+            const xPos = touch.clientX / window.innerWidth - 0.5; // -0.5 to 0.5
+            
+            flames.forEach((flame, index) => {
+                const offsetX = xPos * 20 * (index % 2 === 0 ? 1 : -1);
+                flame.style.transform = `translateX(${offsetX}px) scaleY(${1 + Math.abs(xPos) * 0.2})`;
+            });
+        }
+    });
+
+    // Add some automatic movement even without interaction
+    let animationFrame;
+    const autoAnimate = () => {
+        const time = Date.now() / 1000;
+        const xPos = Math.sin(time) * 0.2; // -0.2 to 0.2
+        
+        flames.forEach((flame, index) => {
+            const offsetX = xPos * 15 * (index % 2 === 0 ? 1 : -1);
+            flame.style.transform = `translateX(${offsetX}px) scaleY(${1 + Math.abs(xPos) * 0.1})`;
+        });
+        
+        animationFrame = requestAnimationFrame(autoAnimate);
+    };
+    
+    // Start automatic animation
+    autoAnimate();
+    
+    // Stop animation when user interacts
+    container.addEventListener('mousemove', () => {
+        cancelAnimationFrame(animationFrame);
+        // Restart after 3 seconds of no interaction
+        clearTimeout(window.restartTimer);
+        window.restartTimer = setTimeout(() => {
+            autoAnimate();
+        }, 3000);
     });
 });
 
